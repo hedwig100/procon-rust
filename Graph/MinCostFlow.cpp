@@ -70,12 +70,64 @@ struct MinCostFlow {
 
 
 // Potential and Dijkstra 
+// 負辺に対応していない
 struct MinCostFlow {
-    struct edge{int to,cap,cost,rev;};
+    struct edge{int to,rev; long long cap,cost;};
     int N;
-    vector<vector<int>> G;
-};
+    vector<vector<edge>> G;
+    vector<long long> h,dist;
+    vector<int> prevv,preve;
+    MinCostFlow(int N) {
+        G.resize(N);
+        h.assign(N,0);
+        dist.assign(N,HINF);
+        prevv.resize(N);
+        preve.resize(N);
+    }
 
+    void add_edge(int from,int to,long long cap,long long cost) {
+        G[from].push_back(edge{to,cap,cost,(int)G[to].size()});
+        G[to].push_back(edge{from,0,-cost,(int)G[from].size()-1});
+    }
+
+    long long flow(int s,int t,long long f) {
+        long long res = 0;
+        while (f > 0) {
+            priority_queue<PL,vector<PL>,greater<PL>> q;
+            fill(dist.begin(),dist.end(),HINF);
+            dist[s] = 0;
+            q.push(PL{0,s});
+            while (!q.empty()) {
+                PL p = q.top(); q.pop();
+                int v = p.second;
+                if (dist[v] < p.first) continue;
+                for (int i = 0; i < (int)G[v].size();++i) {
+                    edge &e = G[v][i];
+                    if (e.cap > 0 && dist[e.to] > dist[v] + e.cost + h[v] - h[e.to]) {
+                        dist[e.to] = dist[v] + e.cost + h[v] - h[e.to];
+                        prevv[e.to] = v;
+                        preve[e.to] = i;
+                        q.push(P{dist[e.to],e.to});
+                    }
+                }
+            }
+            if (dist[t] == HINF) return -1;
+            for (int v = 0;v < N; ++v) h[v] += dist[v];
+            long long d = f;
+            for (int v = t;v != s;v = prevv[v]) {
+                d = min(d,G[prevv[v]][preve[v]].cap);
+            }
+            f -= d;
+            res += d*h[t];
+            for (int v = t;v != s; v = prevv[v]) {
+                edge &e = G[prevv[v]][preve[v]];
+                e.cap -= d;
+                G[v][e.rev].cap += d;
+            }
+        }
+        return res;
+    }
+};
 
 
 
