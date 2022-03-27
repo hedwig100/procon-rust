@@ -36,4 +36,11 @@ ans.txt
 # rust 
 /target
 Cargo.lock
-src/bin/*.rs
+src/bin/a.rs
+src/bin/b.rs
+src/bin/c.rs
+src/bin/d.rs
+src/bin/e.rs
+src/bin/f.rs
+src/bin/g.rs
+src/bin/h.rs
