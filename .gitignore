@@ -1,6 +1,5 @@
 .DS_Store 
-/target
-Cargo.lock
+# cpp
 a.cpp
 b.cpp
 c.cpp
@@ -33,3 +32,8 @@ make_test.o
 input.txt
 output.txt
 ans.txt
+
+# rust 
+/target
+Cargo.lock
+src/bin/*.rs
