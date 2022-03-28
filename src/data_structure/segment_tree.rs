@@ -21,19 +21,17 @@ where
         }
     }
 
-    pub fn build(data: &Vec<T>) -> Self {
+    pub fn build(data: &[T]) -> Self {
         let n = data.len();
         let mut st = SegmentTree {
             n,
             tree: vec![T::e(); 2 * n],
         };
-        for i in n..2 * n {
-            st.tree[i] = data[i - n].clone();
-        }
+        st.tree[n..(2 * n)].clone_from_slice(&data[..(2 * n - n)]);
         for i in (0..n).rev() {
             st.tree[i] = T::op(&st.tree[i << 1], &st.tree[i << 1 | 1])
         }
-        return st;
+        st
     }
 
     pub fn update(&mut self, k: usize, x: T) {

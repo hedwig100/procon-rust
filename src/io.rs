@@ -4,7 +4,7 @@ pub fn input_intvec() -> Vec<usize> {
     std::io::stdin().read_line(&mut input).unwrap();
     input
         .trim()
-        .split(" ")
+        .split(' ')
         .map(|x| x.parse::<usize>().unwrap())
         .collect()
 }

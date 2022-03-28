@@ -5,8 +5,8 @@ use std::collections::VecDeque;
 pub fn top_sort(graph: Vec<Vec<usize>>) -> Result<Vec<usize>, &'static str> {
     let n = graph.len();
     let mut indeg = vec![0; n];
-    for v in 0..n {
-        for &u in graph[v].iter() {
+    for v in graph.iter() {
+        for &u in v.iter() {
             indeg[u] += 1;
         }
     }
@@ -43,5 +43,5 @@ pub fn top_sort(graph: Vec<Vec<usize>>) -> Result<Vec<usize>, &'static str> {
     for i in 0..n {
         ans[order[i]] = i;
     }
-    return Ok(ans);
+    Ok(ans)
 }
